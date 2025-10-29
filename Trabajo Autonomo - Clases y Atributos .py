@@ -1,5 +1,5 @@
 # =============================================
-# SISTEMA 1: DELEGADO CNSIS - POSTULACIÓN AUTOMÁTICA
+# SISTEMA 1: DELEGADO CNSIS - POSTULACIÓN AUTOMÁTICA (hola soy paul) 
 # =============================================
 
 class RegistroNacional:
