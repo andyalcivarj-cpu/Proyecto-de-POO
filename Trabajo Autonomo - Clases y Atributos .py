@@ -1,5 +1,5 @@
 
-# SISTEMA 1: DELEGADO CNSIS - POSTULACIÓN AUTOMÁTICA (hola soy paul) no se porq no deja
+# SISTEMA 1: DELEGADO CNSIS - POSTULACIÓN AUTOMÁTICA
 # =============================================
 
 class RegistroNacional:
