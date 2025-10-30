@@ -1,4 +1,4 @@
-#Parte 1(Elkin) Registro nacional 
+# Parte 1 (Elkin) Registro nacional 
 
 class RegistroNacional:
     def _init_(self):
@@ -48,3 +48,64 @@ class Carrera:
         self.codigo = codigo
         self.nombre = nombre
         self.cupos = cupos
+
+# Parte 2 (Jeremmy) Sistema CNSIS + Inscripcion
+
+class SistemaCNSIS:
+    def __init__(self):
+        self.registro = RegistroNacional()
+        self.universidades = {
+            "UCentral": Universidad("Universidad Central", 10, 300, "Mañana"),
+            "UNorte": Universidad("Universidad del Norte", 5, 150, "Tarde")
+        }
+        self.carreras = {
+            "MED": Carrera("MED", "Medicina", 50),
+            "ING": Carrera("ING", "Ingeniería", 80),
+            "DER": Carrera("DER", "Derecho", 60)
+        }
+        self.postulantes = []
+
+    #Inscripcion Automatica
+    def inscribir(self, cedula, carrera_deseada):
+        # 1. Validar cédula
+        nombre, nota_bachiller = self.registro.buscar(cedula)
+        if nombre is None:
+            print(f"Cédula {cedula} NO registrada en CNSIS.")
+            return
+
+        #2 Evitar duplicados
+        if any(p["cedula"] == cedula for p in self.postulantes):
+            print("Ya estás inscrito.")
+            return
+
+        #3 Asignar universidad y examen automáticamente
+        uni = self.universidades["UCentral"]
+        examen = uni.asignar_examen()
+        if examen is None:
+            print("No hay cupos para examen.")
+            return
+
+        #4 Guardar postulante
+        postulante = {
+            "cedula": cedula,
+            "nombre": nombre,
+            "bachiller": nota_bachiller,
+            "carrera": carrera_deseada,
+            "universidad": uni.nombre,
+            "examen": {
+                "fecha": examen[0],
+                "hora": examen[1],
+                "sala": examen[2],
+                "jornada": examen[3]
+            },
+            "nota_examen": None,
+            "nota_final": None
+        }
+        self.postulantes.append(postulante)
+
+        #5 Primer correo (simulado)
+        print(f"\nCORREO 1 → {postulante['nombre']}")
+        print(f" Asunto: CONFIRMACIÓN DE EXAMEN")
+        print(f" Fecha: {examen[0]} | Hora: {examen[1]}")
+        print(f" Lugar: {uni.nombre} - {examen[2]} ({examen[3]})")
+        print(f" Lleve: Cédula y lápiz\n")
