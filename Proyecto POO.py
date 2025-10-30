@@ -124,8 +124,8 @@ class SistemaCNSIS:
                 return
         print("Cédula no encontrada.")
 
-    #Parte 4 (Paul) Resumen y ejecucion completa
-    #3 Mostrar el resumen final
+#Parte 4 (Paul) Resumen y ejecucion completa
+    #Mostrar el resumen final
     def resumen(self):
         print("\n" + "=" * 60)
         print("RESUMEN FINAL - DELEGADO CNSIS")
@@ -149,15 +149,15 @@ sistema = SistemaCNSIS()
 
 print("SISTEMA 1: DELEGADO CNSIS - INSCRIPCIÓN AUTOMÁTICA\n")
 
-#1 Inscribir estudiantes
+#Inscribir estudiantes
 sistema.inscribir("19012345", "MED")
 sistema.inscribir("19012346", "ING")
 sistema.inscribir("19012347", "DER")
 
-#2 Registrar notas del examen
+#Registrar notas del examen
 sistema.registrar_nota("19012345", 17.0)
 sistema.registrar_nota("19012346", 16.5)
 sistema.registrar_nota("19012347", 18.0)
 
-#3 Mostrar resumen
+#Mostrar resumen
 sistema.resumen()
