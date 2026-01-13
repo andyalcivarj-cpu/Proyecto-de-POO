@@ -1,0 +1,3 @@
+Presentación de todo el codigo que se basa en la creacion de un sistema de aceptacion de cupos para estudiantes 
+universitarios, tomando en cuenta los puntajes adquiridos en los examenes de ingreso a la universidad y tomando
+en cuenta los puntos que pide cada una de las carreras solicitadas.
