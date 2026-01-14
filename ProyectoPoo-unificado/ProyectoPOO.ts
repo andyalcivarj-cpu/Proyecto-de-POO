@@ -3,12 +3,32 @@
 // Con más carreras realistas para Ecuador
 // ======================================================================
 
+// NOTA GENERAL SOBRE UNIDADES DEL PROYECTO:
+// Este sistema aplica conceptos de POO conforme a las unidades especificadas:
+//
+// Unidad 1: Fundamentos de programación orientada a objetos
+// - Clases y objetos: Definidas para Estudiante, LocalExamen, Matricula, etc. Se crean instancias (objetos) de clases como FacadeUniversidad.
+// - Propiedades, constructores, métodos y sobrecarga: Cada clase tiene propiedades encapsuladas, constructores (e.g., en GestorCupos), métodos get/set implícitos mediante encapsulamiento.
+// - Encapsulamiento: Uso de modificadores de acceso (private, public, protected) en clases como SistemaUniversidad. Paso por valor/parámetro en métodos como postular() y matricular().
+//
+// Unidad 2: Herencia y polimorfismo
+// - Herencia simple: GestorCupos hereda de Subject (superclase abstracta).
+// - Constructores en la superclase: Llamada a super() en GestorCupos.
+// - Polimorfismo con clases abstractas: Subject es abstracta, con métodos como notify() implementados en subclases.
+// - Polimorfismo con interfaces: Observer es una interface implementada por Notificador.
+//
+// Unidad 3: Patrones de diseño
+// - Principios SOLID: S (Singleton en SistemaUniversidad), O (abierto a extensión en Observer), L (polimorfismo en herencia), I (interfaces pequeñas como Observer), D (dependencias invertidas en Facade).
+// - Patrones Creacionales: Singleton (SistemaUniversidad).
+// - Patrones Estructurales: Facade (FacadeUniversidad simplifica el sistema).
+// - Patrones de Comportamiento: Observer (para notificaciones de cupos en GestorCupos).
+
 import promptSync from "prompt-sync";
 
 const prompt = promptSync();
 
 // ----------------------------------------------------------------------
-// 1. INTERFACES / TIPOS
+// 1. INTERFACES / TIPOS (Unidad 2: Polimorfismo con interfaces - Interfaces definen contratos para clases implementadoras)
 // ----------------------------------------------------------------------
 
 interface Estudiante {
@@ -36,7 +56,7 @@ interface Matricula {
 }
 
 // ----------------------------------------------------------------------
-// 2. BASE DE DATOS EN MEMORIA
+// 2. BASE DE DATOS EN MEMORIA (Unidad 1: Objetos - Estructuras de datos como Records y arrays son objetos que almacenan información)
 // ----------------------------------------------------------------------
 
 const ESTUDIANTES: Record<string, Estudiante> = {};
@@ -52,7 +72,7 @@ const UNIVERSIDADES: Record<string, { carreras: Record<string, number> }> = {
     carreras: {
       Medicina: 30,
       Enfermería: 60,
-      "Psicología": 80,
+      Psicología: 80,
       "Pedagogía de los Idiomas": 50,
       Turismo: 40
     },
@@ -64,7 +84,7 @@ const UNIVERSIDADES: Record<string, { carreras: Record<string, number> }> = {
       "Ingeniería Civil": 50,
       "Ingeniería Mecánica": 45,
       "Administración de Empresas": 100,
-      Ciberseguridad: 40,
+      Ciberseguridad: 40
     }
   }
 };
@@ -74,6 +94,8 @@ const MATRICULADOS: Record<string, Matricula> = {};
 
 // ----------------------------------------------------------------------
 // 3. PATRÓN OBSERVER (para notificar reducción de cupos)
+// Unidad 3: Patrones de Comportamiento - Observer permite notificar cambios (e.g., reducción de cupos) a observadores.
+// Unidad 2: Polimorfismo con interfaces (Observer) y clases abstractas (Subject).
 // ----------------------------------------------------------------------
 
 interface Observer {
@@ -114,6 +136,8 @@ class GestorCupos extends Subject {
 
 // ----------------------------------------------------------------------
 // 4. SINGLETON - Sistema Universidad
+// Unidad 3: Patrones Creacionales - Singleton asegura una única instancia del sistema.
+// Unidad 1: Encapsulamiento - Propiedades private, constructor private.
 // ----------------------------------------------------------------------
 
 class SistemaUniversidad {
@@ -135,6 +159,7 @@ class SistemaUniversidad {
 
 // ----------------------------------------------------------------------
 // 5. UTILIDADES - Simulación de examen con rangos realistas por carrera
+// Unidad 1: Métodos - Función rendirExamen demuestra paso por parámetro (carrera) y retorno de valor.
 // ----------------------------------------------------------------------
 
 function rendirExamen(carrera: string): number {
@@ -158,6 +183,8 @@ function rendirExamen(carrera: string): number {
 
 // ----------------------------------------------------------------------
 // 6. SERVICIOS
+// Unidad 1: Clases, métodos, encapsulamiento - Servicios como AdmisionService encapsulan lógica, con propiedades private.
+// Unidad 3: SOLID - Inyección de dependencias (gestor en constructor).
 // ----------------------------------------------------------------------
 
 class AdmisionService {
@@ -256,18 +283,18 @@ class MatriculaService {
       return;
     }
 
-    // 2. ¿Ya tiene matrícula activa? ← ESTA ES LA VERIFICACIÓN QUE FALTABA
+    // 2. ¿Ya tiene matrícula activa? ← Verificación para evitar duplicados
     if (MATRICULADOS[cedula]) {
       const mat = MATRICULADOS[cedula];
-      console.log(`❌ El estudiante ya está matriculado en esta carrera:`);
+      console.log(`❌ El estudiante ya está matriculado:`);
       console.log(`   Carrera: ${mat.carrera}`);
       console.log(`   Código: ${mat.codigo}`);
       console.log(`   Fecha: ${mat.fecha}`);
-      console.log("   No se permite matrícula múltiple.");
+      console.log("No se permite matrícula múltiple.");
       return;
     }
 
-    // Si todo está bien → matricular
+    // Si todo bien → matricular
     const { universidad, carrera } = ACEPTADOS[cedula];
 
     MATRICULADOS[cedula] = {
@@ -283,8 +310,10 @@ class MatriculaService {
     console.log(`Fecha: ${MATRICULADOS[cedula].fecha}\n`);
   }
 }
+
 // ----------------------------------------------------------------------
 // 7. FACHADA (Facade)
+// Unidad 3: Patrones Estructurales - Facade simplifica la interacción con subsistemas (admision, matricula, sistema).
 // ----------------------------------------------------------------------
 
 class FacadeUniversidad {
@@ -328,6 +357,7 @@ class FacadeUniversidad {
 
 // ----------------------------------------------------------------------
 // 8. PROGRAMA PRINCIPAL
+// Unidad 1: Objetos y métodos - Creación de objeto facade y llamada a métodos en loop.
 // ----------------------------------------------------------------------
 
 function main() {
